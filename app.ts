@@ -1,20 +1,27 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import mongoose, { Schema } from "mongoose";
+import Schedules from "./models/schedules.model";
 dotenv.config();
 
-const database = mongoose.connect(process.env.MONGODB_URI!)
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
-app.get("/", (req: Request, res: Response) => {
-  database.then(() => {
-    res.send("Connected");
+app.get("/", async (req: Request, res: Response) => {
+  try {
+    const schedule = await Schedules.create({
+      isActive: true,
+      label: "For Ollie",
+      repeatModes: ["1"]
+    });
+    console.log("Schedule created:", schedule);
+    res.send("Created");
+  } catch (error) {
+    console.log('error :>> ', error);
+    res.send(error)
+  }
+ 
 
-  }).catch((error) => {
-    res.send(" Not Connected");
-  });
 });
 
 
