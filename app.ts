@@ -1,32 +1,19 @@
-import express, { Express, Request, Response } from "express";
+import express, { Application, Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import Schedules from "./models/schedules.model";
+import ScheduleRoutes from "./routes/schedules";
+
 dotenv.config();
 
-
-const app: Express = express();
+const app: Application = express();
 const port = process.env.PORT || 3000;
 
-app.get("/", async (req: Request, res: Response) => {
-  try {
-    const schedule = await Schedules.create({
-      isActive: true,
-      label: "For Ollie",
-      repeatModes: ["1"]
-    });
-    console.log("Schedule created:", schedule);
-    res.send("Created");
-  } catch (error) {
-    console.log('error :>> ', error);
-    res.send(error)
-  }
- 
+const start = async(app: Application)=>{
+  app.listen(port, () => {
+    console.log(`[server]: Server is running at http://localhost:${port}`);
+  });
+}
 
-});
+start(app)
+app.use(express.json())
+app.use("/schedules", ScheduleRoutes)
 
-
-app.listen(port, () => {
-
-
-  console.log(`[server]: Server is running at http://localhost:${port}`);
-});

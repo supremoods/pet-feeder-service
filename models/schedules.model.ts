@@ -1,26 +1,37 @@
-import { Timestamp } from "mongodb";
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Model, Document, model } from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGODB_URI||'')
-mongoose.Promise = global.Promise
+interface ISchedule extends Document {
+    isActive: boolean;
+    label: string;
+    repeatModes: string[];
+    time: Date;
+}
 
+class Schedule {
+    private static _model: Model<ISchedule>;
 
-const schedules = new Schema(
-    {
-        isActive: Boolean,
-        label: String,
-        repeatModes: Array,
-        time: Date,
-    },
-    {
-        timestamps: true
+    public static get model(): Model<ISchedule> {
+        if (!this._model) {
+            mongoose.connect(process.env.MONGODB_URI||'')
+            mongoose.Promise = global.Promise
+            const scheduleSchema = new Schema<ISchedule>(
+                {
+                    isActive: Boolean,
+                    label: String,
+                    repeatModes: [String],
+                    time: Date,
+                },
+                {
+                    timestamps: true
+                }
+            );
+            this._model = mongoose.model<ISchedule>("schedules", scheduleSchema);
+        }
+        return this._model;
     }
-);
+}
 
-
-const Schedules = mongoose.models.schedules || mongoose.model("schedules", schedules)
-
-export default Schedules
+export default Schedule;
