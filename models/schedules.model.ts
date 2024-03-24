@@ -6,7 +6,7 @@ dotenv.config();
 interface ISchedule extends Document {
     isActive: boolean;
     label: string;
-    repeatModes: string[];
+    repeatModes: [];
     time: Date;
 }
 
@@ -21,7 +21,7 @@ class Schedule {
                 {
                     isActive: Boolean,
                     label: String,
-                    repeatModes: [String],
+                    repeatModes: [],
                     time: Date,
                 },
                 {
