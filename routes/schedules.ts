@@ -2,13 +2,19 @@ import ScheduleController from "../controller/schedules.controller";
 import express, { Express } from "express";
 
 const ScheduleRoutes: Express = express();
+const scheduleController = new ScheduleController();
 
-const Schedule = new ScheduleController() 
+// Define base path
+const basePath = "/api/schedules/";
 
-ScheduleRoutes.get("/", Schedule.find)
-ScheduleRoutes.get("/:id", Schedule.findById)
-ScheduleRoutes.put("/:id", Schedule.update)
-ScheduleRoutes.delete("/:id", Schedule.delete)
-ScheduleRoutes.post("/", Schedule.create)
-  
-export default ScheduleRoutes
+// Define routes
+ScheduleRoutes.get(basePath, scheduleController.find);
+ScheduleRoutes.get(`${basePath}:id`, scheduleController.findById);
+ScheduleRoutes.put(`${basePath}:id`, scheduleController.update);
+ScheduleRoutes.delete(`${basePath}:id`, scheduleController.delete);
+ScheduleRoutes.post(basePath, scheduleController.create);
+
+// Additional custom route
+ScheduleRoutes.get("/api/isSched", scheduleController.checkIsSched);
+
+export default ScheduleRoutes;
