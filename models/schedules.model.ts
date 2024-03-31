@@ -1,17 +1,13 @@
 import mongoose, { Schema, Model, Document, model } from "mongoose";
 import dotenv from "dotenv";
+import { ISchedule } from "../types/schedule";
 
 dotenv.config();
 
-interface ISchedule extends Document {
-    isActive: boolean;
-    label: string;
-    repeatModes: [];
-    time: Date;
-}
 
 class Schedule {
     private static _model: Model<ISchedule>;
+    repeatModes: any;
 
     public static get model(): Model<ISchedule> {
         if (!this._model) {

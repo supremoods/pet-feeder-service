@@ -22,6 +22,21 @@ class Mixins {
         const currentTime = moment.tz("Asia/Manila").format('HH:mm') + ':00';
         return currentTime;
     }
+
+    static getDateYesterday(): {date: Date, day: string}{
+       // Get today's date in the "Asia/Manila" timezone
+        const today: moment.Moment = moment.tz("Asia/Manila");
+        
+        // Subtract one day from today's date to get yesterday's date
+        const yesterday: moment.Moment = today.clone().subtract(1, 'day');
+        
+        // Get the day of the week for yesterday in abbreviated format
+        const daysAbbreviated: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const dayIndex: number = yesterday.day();
+        const day: string = daysAbbreviated[dayIndex];
+        
+        return { date: yesterday.toDate(), day: day };
+    }
     
 
     static convertToManilaTime(timeString: string): string{
