@@ -11,7 +11,9 @@ export default class ScheduleController extends BaseController{
 
     async checkIsSched(req: Request, res: Response){
         try {
-            const schedules = await Schedule.model.find();
+            const schedules = await Schedule.model.find({
+                isActive: true
+            });
         
             const dayToday:string = Mixins.getCurrentDay()
             const timeToday:string = Mixins.getCurrentTime()
@@ -24,7 +26,7 @@ export default class ScheduleController extends BaseController{
 
                 console.log('scheduleTime :>> ', scheduleTime);
                 // Check if the schedule matches the current day and time and also active
-                if (schedule.repeatModes.some((item:any) => item.code === dayToday && item.isActive && !item.isDispensed) && scheduleTime === timeToday) {
+                if (schedule.repeatModes.some((item:any) => item.code === dayToday && item.isActive && !item.isDispensed) && scheduleTime === timeToday ) {
                     schedule.repeatModes.forEach( async (mode : IMode) => {
                         if(mode.code == dayToday){
                             mode.isDispensed = true
