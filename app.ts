@@ -1,6 +1,8 @@
 import express, { Application, Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import ScheduleRoutes from "./routes/schedules";
+import ConfigurationRoutes from "./routes/configuration";
+import DeviceStatusRoutes from "./routes/deviceStatus";
 
 dotenv.config();
 
@@ -16,4 +18,5 @@ const start = async(app: Application)=>{
 start(app)
 app.use(express.json())
 app.use("/schedules", ScheduleRoutes)
-
+app.use("/configurations", ConfigurationRoutes)
+app.use("/deviceStatus", DeviceStatusRoutes)

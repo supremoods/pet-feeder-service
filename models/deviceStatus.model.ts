@@ -1,33 +1,28 @@
 import mongoose, { Schema, Model, Document, model } from "mongoose";
 import dotenv from "dotenv";
-import { ISchedule } from "../types/schedule";
+import { IDeviceStatus } from "../types/deviceStatus";
 
 dotenv.config();
 
+export default class DeviceStatus {
+    private static _model: Model<IDeviceStatus>;
 
-export default class Schedule {
-    private static _model: Model<ISchedule>;
-    repeatModes: any;
-
-    public static get model(): Model<ISchedule> {
+    public static get model(): Model<IDeviceStatus> {
         if (!this._model) {
             mongoose.connect(process.env.MONGODB_URI||'')
             mongoose.Promise = global.Promise
-            const scheduleSchema = new Schema<ISchedule>(
+            const deviceStatusSchema = new Schema<IDeviceStatus>(
                 {
                     isActive: Boolean,
-                    label: String,
-                    repeatModes: [],
-                    time: Date,
+                    time: Date
                 },
                 {
                     timestamps: true
                 }
             );
-            this._model = mongoose.model<ISchedule>("schedules", scheduleSchema);
+            this._model = mongoose.model<IDeviceStatus>("deviceStatus", deviceStatusSchema);
         }
         return this._model;
     }
 }
-
 
